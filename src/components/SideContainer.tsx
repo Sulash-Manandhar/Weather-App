@@ -13,14 +13,22 @@ interface Props {
   sunset: number;
   wind_speed: number;
   weeklyData: WeeklyWeather[];
+  isCelsius: boolean;
+  setIsCelsius: (arg: boolean) => void;
+  handleTemperatureConversion: (arg: void) => void;
 }
 
 const SideContainer: React.FC<Props> = (props) => {
-  const { weeklyData } = props;
+  const { weeklyData, isCelsius, setIsCelsius, handleTemperatureConversion } =
+    props;
   return (
     <Grid gridAutoRows="auto auto auto" gap="30px">
       <GridItem>
-        <Navbar />
+        <Navbar
+          isCelsius={isCelsius}
+          setIsCelsius={setIsCelsius}
+          handleTemperatureConversion={handleTemperatureConversion}
+        />
       </GridItem>
       <GridItem>
         <WeeklyStatus weeklyData={weeklyData} />

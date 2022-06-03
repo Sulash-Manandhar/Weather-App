@@ -27,7 +27,7 @@ const Dashboard = () => {
     district: "Kathmandu",
     country: "Nepal",
   });
-
+  const [isCelsius, setIsCelsius] = useState<boolean>(true);
   //@desc fetch current weather data and daily weather data
   useEffect(() => {
     axios
@@ -71,6 +71,35 @@ const Dashboard = () => {
       });
   }, [cord]);
 
+  const handleTemperatureConversion = (): void => {
+    let todayStatics: TodaysWeather = { ...todayData };
+    let weeklyStatics: WeeklyWeather[] = [...weeklyData];
+    //Convertng to Celsius
+    if (!isCelsius) {
+      todayStatics.temp = parseFloat(
+        (((todayStatics.temp - 32) * 5) / 9).toFixed(2)
+      );
+      weeklyStatics.map(
+        (item) =>
+          (item.temp = parseFloat((((item.temp - 32) * 5) / 9).toFixed(2)))
+      );
+      setTodayData(todayStatics);
+      setWeeklyData(weeklyStatics);
+    }
+    //converting to fahrenheit
+    if (isCelsius) {
+      todayStatics.temp = parseFloat(
+        ((todayStatics.temp * 9) / 5 + 32).toFixed(2)
+      );
+
+      weeklyStatics.map(
+        (item) =>
+          (item.temp = parseFloat(((item.temp * 9) / 5 + 32).toFixed(2)))
+      );
+      setWeeklyData(weeklyStatics);
+      setTodayData(todayStatics);
+    }
+  };
   return (
     <Box>
       <Grid templateColumns="25% 75%" h="100%" templateRows="100% 100%">
@@ -92,6 +121,9 @@ const Dashboard = () => {
             sunset={todayData.sunset}
             wind_speed={todayData.wind_speed}
             weeklyData={weeklyData}
+            isCelsius={isCelsius}
+            setIsCelsius={setIsCelsius}
+            handleTemperatureConversion={handleTemperatureConversion}
           />
         </GridItem>
       </Grid>

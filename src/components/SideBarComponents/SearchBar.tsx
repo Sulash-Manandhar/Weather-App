@@ -1,4 +1,10 @@
-import { Box, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+  Box,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Select,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Coordinates } from "../Schema/Schema";
@@ -38,7 +44,7 @@ const SearchBar: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box>
+    <Box position={"relative"}>
       <InputGroup>
         <InputLeftElement children={<AiOutlineSearch />} />
         <Input
@@ -50,6 +56,36 @@ const SearchBar: React.FC<Props> = (props) => {
           onKeyDown={(e: any) => (e.key === "Enter" ? getSearchWord(e) : null)}
         />
       </InputGroup>
+      <Box
+        mt={1}
+        borderRadius={6}
+        bg={"project.grey"}
+        position={"absolute"}
+        width="100%"
+        display={"none"}
+      >
+        <Box
+          borderBottom={"1px solid white"}
+          p="5px"
+          _hover={{ bg: "project.blue", color: "white" }}
+        >
+          <option value="option1">Option 1</option>
+        </Box>
+        <Box
+          borderBottom={"1px solid white"}
+          p="5px"
+          _hover={{ bg: "project.blue", color: "white" }}
+        >
+          <option value="option1">Option 1</option>
+        </Box>
+        <Box
+          borderBottom={"1px solid white"}
+          p="5px"
+          _hover={{ bg: "project.blue", color: "white" }}
+        >
+          <option value="option1">Option 1</option>
+        </Box>
+      </Box>
     </Box>
   );
 };

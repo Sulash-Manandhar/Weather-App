@@ -1,7 +1,21 @@
 import { Flex, Text, Box, Avatar } from "@chakra-ui/react";
+import React from "react";
 import { AiOutlineArrowDown } from "react-icons/ai";
 
-const Navbar = () => {
+interface Props {
+  isCelsius: boolean;
+  setIsCelsius: (arg: boolean) => void;
+  handleTemperatureConversion: (arg: void) => void;
+}
+const Navbar: React.FC<Props> = (props) => {
+  const { isCelsius, setIsCelsius, handleTemperatureConversion } = props;
+
+  const handleButtonClick = (e: any): void => {
+    e.preventDefault();
+    setIsCelsius(!isCelsius);
+    handleTemperatureConversion();
+  };
+
   return (
     <Flex direction="row" justifyContent="space-between">
       <Flex flexBasis="40%" justifyContent="flex-start">
@@ -15,22 +29,26 @@ const Navbar = () => {
       <Box flexBasis="50%">
         <Flex justifyContent="flex-end">
           <Box
+            cursor={"pointer"}
             borderRadius="50%"
             h="30px"
             w="30px"
-            bg="project.blue"
+            bg={isCelsius ? "project.blue" : "project.muted"}
             color="white"
             mr="10px"
+            onClick={handleButtonClick}
           >
             <Text align="center">&#8451;</Text>
           </Box>
           <Box
+            cursor={"pointer"}
             borderRadius="50%"
             h="30px"
             w="30px"
             color="white"
-            bg="project.muted"
+            bg={!isCelsius ? "project.blue" : "project.muted"}
             mr="10px"
+            onClick={handleButtonClick}
           >
             <Text align="center">&#x2109;</Text>
           </Box>
