@@ -1,46 +1,60 @@
 import {
   Box,
+  Grid,
+  GridItem,
   Input,
   InputGroup,
   InputLeftElement,
-  Select,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Coordinates } from "../Schema/Schema";
+import { Coordinates, CountrySchema } from "../Schema/Schema";
 
 interface Props {
   setCord: (arg: Coordinates) => void;
 }
 const SearchBar: React.FC<Props> = (props) => {
   const { setCord } = props;
+  const [searchItem, setSearchItem] = useState<any>([]);
   const getSearchWord = (e: any): void => {
     e.preventDefault();
-    if (e.key === "Enter") {
-      getCoordinated(e.target.value);
+    if (e.target.value !== "") {
+      axios
+        .get(
+          `https://api.openweathermap.org/geo/1.0/direct?q=${e.target.value}&limit=3&appid=8537edd8c0c07cf39e8ba8cc27549baf`
+        )
+        .then((res: any) => {
+          if (res.data.length) {
+            setSearchItem(res.data);
+          } else {
+            setSearchItem([]);
+          }
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
+    } else {
+      setSearchItem([]);
     }
   };
 
-  const getCoordinated = (search: string): void => {
-    axios
-      .get(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${search}&appid=ebf68f619031f111430362e3c38c66be`
-      )
-      .then((res: any) => {
-        console.log(res);
-        if (res.data.length) {
-          let coordinates = {
-            district: res.data[0].name,
-            lat: res.data[0].lat,
-            lon: res.data[0].lon,
-            country: res.data[0].country,
-          };
-          setCord(coordinates);
-        }
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
+  const setCoordinates = (
+    district: string,
+    lat: number,
+    lon: number,
+    country: string
+  ): void => {
+    let coordinates = {
+      district: district,
+      lat: lat,
+      lon: lon,
+      country: country,
+    };
+    console.log("Logged Output : coordinates", coordinates);
+
+    setCord(coordinates);
+    setSearchItem([]);
   };
 
   return (
@@ -53,38 +67,44 @@ const SearchBar: React.FC<Props> = (props) => {
           bg="project.grey"
           borderColor="project.grey"
           pattern="\b[A-z]+\b"
-          onKeyDown={(e: any) => (e.key === "Enter" ? getSearchWord(e) : null)}
+          onChange={getSearchWord}
         />
       </InputGroup>
+
       <Box
         mt={1}
         borderRadius={6}
         bg={"project.grey"}
         position={"absolute"}
         width="100%"
-        display={"none"}
       >
-        <Box
-          borderBottom={"1px solid white"}
-          p="5px"
-          _hover={{ bg: "project.blue", color: "white" }}
-        >
-          <option value="option1">Option 1</option>
-        </Box>
-        <Box
-          borderBottom={"1px solid white"}
-          p="5px"
-          _hover={{ bg: "project.blue", color: "white" }}
-        >
-          <option value="option1">Option 1</option>
-        </Box>
-        <Box
-          borderBottom={"1px solid white"}
-          p="5px"
-          _hover={{ bg: "project.blue", color: "white" }}
-        >
-          <option value="option1">Option 1</option>
-        </Box>
+        {searchItem?.length > 0 &&
+          searchItem.map((item: any, index: number) => (
+            <Box
+              borderBottom={"1px solid white"}
+              p="5px"
+              _hover={{ bg: "project.blue", color: "white" }}
+              key={index}
+            >
+              <Grid
+                gridTemplateColumns={"auto auto auto"}
+                gridTemplateRows={"auto"}
+                justifyContent={"space-between"}
+                w="100%"
+                px="2"
+                cursor={"pointer"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCoordinates(item.name, item.lat, item.lon, item.country);
+                }}
+              >
+                <GridItem>{item?.country}</GridItem>
+                <GridItem>{item?.state}</GridItem>
+
+                <GridItem>{item?.name}</GridItem>
+              </Grid>
+            </Box>
+          ))}
       </Box>
     </Box>
   );

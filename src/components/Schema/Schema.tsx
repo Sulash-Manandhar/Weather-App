@@ -22,3 +22,8 @@ export type Coordinates = {
   district: string;
   country?: string;
 };
+
+export type CountrySchema = {
+  name: string;
+  country: string;
+};

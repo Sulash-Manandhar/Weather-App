@@ -32,7 +32,7 @@ const Dashboard = () => {
   useEffect(() => {
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${cord.lat}&lon=${cord.lon}&units=metric&exclude=minutely,hourly,alerts&appid=ebf68f619031f111430362e3c38c66be`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${cord.lat}&lon=${cord.lon}&units=metric&exclude=minutely,hourly,alerts&appid=8537edd8c0c07cf39e8ba8cc27549baf`
       )
       .then((res: any) => {
         let todayStatics: TodaysWeather = {
