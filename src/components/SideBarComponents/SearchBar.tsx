@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Coordinates, CountrySchema } from "../Schema/Schema";
+import { Coordinates } from "../Schema/Schema";
 
 interface Props {
   setCord: (arg: Coordinates) => void;
@@ -17,6 +17,8 @@ interface Props {
 const SearchBar: React.FC<Props> = (props) => {
   const { setCord } = props;
   const [searchItem, setSearchItem] = useState<any>([]);
+  let timeout: any = null;
+
   const getSearchWord = (e: any): void => {
     e.preventDefault();
     if (e.target.value !== "") {
@@ -57,6 +59,16 @@ const SearchBar: React.FC<Props> = (props) => {
     setSearchItem([]);
   };
 
+  const validSearch = (e: any): void => {
+    e.preventDefault();
+    if (setTimeout !== null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      getSearchWord(e);
+    }, 500);
+  };
+
   return (
     <Box position={"relative"}>
       <InputGroup>
@@ -66,8 +78,7 @@ const SearchBar: React.FC<Props> = (props) => {
           placeholder="Search Places"
           bg="project.grey"
           borderColor="project.grey"
-          pattern="\b[A-z]+\b"
-          onChange={getSearchWord}
+          onChange={validSearch}
         />
       </InputGroup>
 

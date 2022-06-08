@@ -2,6 +2,7 @@ import { Grid, GridItem, Heading } from "@chakra-ui/react";
 import Card1 from "./Card1";
 import Card2 from "./Card2";
 import Card3 from "./Card3";
+import TimerComponent from "./TimerComponent";
 
 interface Props {
   humidity: number;
@@ -43,15 +44,6 @@ const CurrentDetails: React.FC<Props> = (props) => {
       img: "./assets/temprature.svg",
       color: "yellow",
     },
-    {
-      id: 4,
-      title: "Air Quality",
-      head: 120,
-      sub: "km/h",
-      status: "Bad Quality",
-      img: "./assets/temprature.svg",
-      color: "red",
-    },
   ];
 
   return (
@@ -82,6 +74,9 @@ const CurrentDetails: React.FC<Props> = (props) => {
             />
           </GridItem>
         ))}
+        <GridItem>
+          <TimerComponent />
+        </GridItem>
       </Grid>
     </>
   );

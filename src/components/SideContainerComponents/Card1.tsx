@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Grid,
   GridItem,
@@ -7,6 +8,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import useButton from "../../Utilities/useButton";
 
 interface Props {
   sunrise: number;
@@ -15,6 +17,7 @@ interface Props {
 
 const Card1: React.FC<Props> = (props) => {
   const { sunrise, sunset } = props;
+  const { loading, updateLoading } = useButton();
 
   const sunrise1 = new Date(sunrise * 1000);
   const sunset1 = new Date(sunset * 1000);
@@ -46,7 +49,7 @@ const Card1: React.FC<Props> = (props) => {
         </Flex>
       </GridItem>
       <GridItem>
-        <Flex justifyContent="flex-start" alignItems="center" gap="10px">
+        {/* <Flex justifyContent="flex-start" alignItems="center" gap="10px">
           <Image src="./assets/sunset.svg" w="30px" />
           <Box>
             <Text as="h4" fontSize="md">
@@ -56,7 +59,16 @@ const Card1: React.FC<Props> = (props) => {
               -1m 36s
             </Text>
           </Box>
-        </Flex>
+        </Flex> */}
+        <Button
+          onClick={updateLoading}
+          isLoading={loading}
+          loadingText="Submitting"
+          colorScheme="teal"
+          variant="outline"
+        >
+          Click me
+        </Button>
       </GridItem>
     </Grid>
   );
